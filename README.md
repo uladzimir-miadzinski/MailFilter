@@ -13,6 +13,8 @@ Mail Filter slash commands:
 * `/mf_clear_senders` - to clear senders ignore list.
 * `/mf_clear_headings` - to clear headings ignore list.
 
+All addon data stored inside `WTF/ACCOUNT_NAME/SavedVariables/MailFilter.lua`. You can edit it manually.
+
 Feel free to use it - it has no legal limitations. 
 
 If you find any bug or strange behaivour please create an issue.
