@@ -1,0 +1,7 @@
+## Interface: 40200
+## Title: _UM: Mail Filter
+## Notes: R706771842841, Z358792642716 - You can say thanks through webmoney.
+## Author: Uladzimir Miadzinski
+## Version 0.1
+
+MailFilter.lua
