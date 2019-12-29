@@ -1,3 +1,6 @@
+local _, namespace = ...
+local L = namespace.L
+
 -- slash commands
 -- /mf_ignore_sender nil
 
@@ -8,49 +11,50 @@ SLASH_MF_CLEAR_SENDERS1 = '/mf_clear_senders'
 SLASH_MF_CLEAR_HEADINGS1 = '/mf_clear_headings'
 
 SlashCmdList['MF'] = function(msg)
-    print(
-        '|cff00ffff Mail Filter |r by Uladzimir Miadzinski\n' ..
-            '|cff00ffff /mf |r - this menu\n' ..
-                '|cff00ffff /mf_ignore_sender |r- to add one more sender to ignore. \n Example: |cff00ff00 /mf_ignore_sender Goldseller\n' ..
-                    '|cff00ffff /mf_ignore_heading |r- to add one more heading to ignore. \n Example: |cff00ff00 /mf_ignore_heading WTS Gold\n' ..
-                        '|cff00ffff /mf_clear_senders |r- to clear senders ignore list.\n' ..
-                            '|cff00ffff /mf_clear_headings |r- to clear headings ignore list.\n\n' ..
-                                '|r The way you can say thanks (WebMoney)\n|cff00ffff R706771842841, Z358792642716 |r'
+    local title = '|cff00ffff Mail Filter |r' .. L['by'] .. ' ' .. L['author'] .. '\n'
+    local slashCommands =
+        table.concat(
+        {
+            '|cff00ffff /mf |r - ' .. L['this_menu'],
+            '|cff00ffff /mf_ignore_sender |r- ' .. L['mf_ignore_sender_descr'],
+            L['example'] .. ': |cff00ff00 /mf_ignore_sender ' .. L['goldseller'],
+            '|cff00ffff /mf_ignore_heading |r- ' .. L['mf_ignore_heading_descr'],
+            L['example'] .. ': |cff00ff00 /mf_ignore_heading ' .. L['need_gold_heading'],
+            '|cff00ffff /mf_clear_senders |r- ' .. L['mf_clear_senders_descr'],
+            '|cff00ffff /mf_clear_headings |r- ' .. L['mf_clear_headings_descr']
+        },
+        '\n'
     )
+
+    print(title .. slashCommands .. L['credentials'])
 end
 
 SlashCmdList['MF_IGNORE_SENDER'] = function(senderToIgnore)
     if (not includes(MailFilterDB.ignore.senders, senderToIgnore)) then
         table.insert(MailFilterDB.ignore.senders, senderToIgnore)
-        print(
-            '|cff00ff00 SUCCESS! :) |r' ..
-                senderToIgnore .. ' was added to ignore list. |cff00ffff /reload |r to take effect.'
-        )
+        print(L['success'] .. senderToIgnore .. L['added_to_ignore_list'])
     else
-        print('|cffff7d0a WARNING! |r' .. senderToIgnore .. ' already exists in ignore list.')
+        print(L['warning'] .. senderToIgnore .. L['already_exists'])
     end
 end
 
 SlashCmdList['MF_IGNORE_HEADING'] = function(headingToIgnore)
     if (not includes(MailFilterDB.ignore.headings, headingToIgnore)) then
         table.insert(MailFilterDB.ignore.headings, headingToIgnore)
-        print(
-            '|cff00ff00 SUCCESS! :) |r' ..
-                headingToIgnore .. ' was added to ignore list. |cff00ffff /reload |r to take effect.'
-        )
+        print(L['success'] .. headingToIgnore .. L['added_to_ignore_list'])
     else
-        print('|cffff7d0a WARNING! |r' .. headingToIgnore .. ' already exists in ignore list.')
+        print(L['warning'] .. headingToIgnore .. L['already_exists'])
     end
 end
 
 SlashCmdList['MF_CLEAR_SENDERS'] = function()
     MailFilterDB.ignore.senders = {}
-    print('|cff00ff00 SUCCESS! :) |r Ignore list with senders was cleared. |cff00ffff /reload |r to take effect.')
+    print(L['success'] .. L['senders_cleared'])
 end
 
 SlashCmdList['MF_CLEAR_HEADINGS'] = function()
     MailFilterDB.ignore.headings = {}
-    print('|cff00ff00 SUCCESS! :) |r Ignore list with headings was cleared. |cff00ffff /reload |r to take effect.')
+    print(L['success'] .. L['headings_cleared'])
 end
 
 -- core
@@ -109,7 +113,10 @@ function removeExtraMail()
             -- for 0.1 version let it be strict equal comparison
             if (includes(MailFilterDB.ignore.senders, sender) or includes(MailFilterDB.ignore.headings, heading)) then
                 DeleteInboxItem(index)
-                print('Mail from |cff00ffff' .. sender .. '|r with heading |cffffff00' .. heading .. '|r was removed.')
+                local mailFrom = L['mail_from'] .. '|cff00ffff' .. sender
+                local mailHeading = L['with_heading'] .. '|cffffff00' .. heading
+
+                print(mailFrom .. mailHeading .. L['was_removed'])
             end
         end
     end
