@@ -58,8 +58,8 @@ SlashCmdList['MF'] = function(msg)
             L['example'] .. ': |cff00ff00 /mf_ignore_heading ' .. L['need_gold_heading'],
             '|cff00ffff /mf_clear_senders |r- ' .. L['mf_clear_senders_descr'],
             '|cff00ffff /mf_clear_headings |r- ' .. L['mf_clear_headings_descr'],
-            '|cff00ffff /mf_show_senders |r- ' ..
-                L['mf_show_senders_descr'] '|cff00ffff /mf_show_headings |r- ' .. L['mf_show_headings_descr']
+            '|cff00ffff /mf_show_senders |r- ' .. L['mf_show_senders_descr'],
+            '|cff00ffff /mf_show_headings |r- ' .. L['mf_show_headings_descr']
         },
         '\n'
     )
