@@ -1,6 +1,38 @@
 local ADDON_NAME, namespace = ...
 local L = namespace.L
 
+function alert(text)
+    local addon = '|cffFF0000[' .. ADDON_NAME .. ']: |r'
+    print(addon .. text)
+end
+
+function arrToString(arr, indentLevel)
+    local str = '['
+    local indentStr = ''
+
+    if (indentLevel == nil) then
+        return arrToString(arr, 0)
+    end
+
+    for i = 0, indentLevel do
+        indentStr = indentStr .. '\t'
+    end
+
+    for index, value in pairs(arr) do
+        if type(value) == 'table' then
+            str = str .. indentStr .. index .. ': \n' .. arrToString(value, (indentLevel + 1))
+        else
+            str = str .. "'" .. value .. "', "
+        end
+    end
+
+    if (string.len(str) > 1) then
+        str = string.sub(str, 0, -3)
+    end
+
+    return str .. ']'
+end
+
 -- slash commands
 -- /mf_ignore_sender nil
 
@@ -9,6 +41,9 @@ SLASH_MF_IGNORE_SENDER1 = '/mf_ignore_sender'
 SLASH_MF_IGNORE_HEADING1 = '/mf_ignore_heading'
 SLASH_MF_CLEAR_SENDERS1 = '/mf_clear_senders'
 SLASH_MF_CLEAR_HEADINGS1 = '/mf_clear_headings'
+SLASH_MF_SHOW_SENDERS1 = '/mf_show_senders'
+SLASH_MF_SHOW_HEADINGS1 = '/mf_show_headings'
+SLASH_MF_RESET1 = '/mf_reset'
 
 SlashCmdList['MF'] = function(msg)
     local title = '|cff00ffff Mail Filter |r' .. L['by'] .. ' ' .. L['author'] .. '\n'
@@ -21,40 +56,57 @@ SlashCmdList['MF'] = function(msg)
             '|cff00ffff /mf_ignore_heading |r- ' .. L['mf_ignore_heading_descr'],
             L['example'] .. ': |cff00ff00 /mf_ignore_heading ' .. L['need_gold_heading'],
             '|cff00ffff /mf_clear_senders |r- ' .. L['mf_clear_senders_descr'],
-            '|cff00ffff /mf_clear_headings |r- ' .. L['mf_clear_headings_descr']
+            '|cff00ffff /mf_clear_headings |r- ' .. L['mf_clear_headings_descr'],
+            '|cff00ffff /mf_show_senders |r- ' ..
+                L['mf_show_senders_descr'] '|cff00ffff /mf_show_headings |r- ' .. L['mf_show_headings_descr']
         },
         '\n'
     )
 
-    print(title .. slashCommands .. L['credentials'])
+    alert(title .. slashCommands .. L['credentials'])
 end
 
 SlashCmdList['MF_IGNORE_SENDER'] = function(senderToIgnore)
     if (not includes(MailFilterDB.ignore.senders, senderToIgnore)) then
         table.insert(MailFilterDB.ignore.senders, senderToIgnore)
-        print(L['success'] .. senderToIgnore .. L['added_to_ignore_list'])
+        alert(L['success'] .. 'Отправитель \'|cFFFFF569' .. senderToIgnore .. '|r\'' .. L['added_to_ignore_list'])
     else
-        print(L['warning'] .. senderToIgnore .. L['already_exists'])
+        alert(L['warning'] .. 'Отправитель \'|cFFFFF569' .. senderToIgnore .. '|r\'' .. L['already_exists'])
     end
 end
 
 SlashCmdList['MF_IGNORE_HEADING'] = function(headingToIgnore)
     if (not includes(MailFilterDB.ignore.headings, headingToIgnore)) then
         table.insert(MailFilterDB.ignore.headings, headingToIgnore)
-        print(L['success'] .. headingToIgnore .. L['added_to_ignore_list'])
+        alert(L['success'] .. 'Заголовок \'|cFFFFF569' .. headingToIgnore .. '|r\'' .. L['added_to_ignore_list'])
     else
-        print(L['warning'] .. headingToIgnore .. L['already_exists'])
+        alert(L['warning'] .. 'Заголовок \'|cFFFFF569' .. headingToIgnore .. '|r\'' .. L['already_exists'])
     end
 end
 
 SlashCmdList['MF_CLEAR_SENDERS'] = function()
     MailFilterDB.ignore.senders = {}
-    print(L['success'] .. L['senders_cleared'])
+    alert(L['success'] .. L['senders_cleared'])
 end
 
 SlashCmdList['MF_CLEAR_HEADINGS'] = function()
     MailFilterDB.ignore.headings = {}
-    print(L['success'] .. L['headings_cleared'])
+    alert(L['success'] .. L['headings_cleared'])
+end
+
+SlashCmdList['MF_SHOW_SENDERS'] = function()
+    local senders = arrToString(MailFilterDB.ignore.senders)
+    alert(L['senders'] .. senders)
+end
+
+SlashCmdList['MF_SHOW_HEADINGS'] = function()
+    local headings = arrToString(MailFilterDB.ignore.headings)
+    alert(L['headings'] .. headings)
+end
+
+SlashCmdList['MF_RESET'] = function()
+    initAddonDB()
+    alert(L['addon_reset'])
 end
 
 -- core
@@ -78,20 +130,24 @@ function includes(arr, val)
     return false
 end
 
+function initAddonDB()
+    MailFilterDB = {
+        ignore = {
+            senders = {
+                '', -- addon will automatically remove mails without sender (if character was removed)
+                'nil' -- addon will automatically remove mails without sender (if character was removed)
+            },
+            headings = {}
+        }
+    }
+end
+
 function onGlobalEvent(self, event)
     local waitInboxTimeout = .3 -- need to wait for loading mails
 
     -- This is the first time this addon is loaded; initialize to object.
     if (event == ADDON_LOADED and MailFilterDB == nil) then
-        MailFilterDB = {
-            ignore = {
-                senders = {
-                    '', -- addon will automatically remove mails without sender (if character was removed)
-                    'nil' -- addon will automatically remove mails without sender (if character was removed)
-                },
-                headings = {}
-            }
-        }
+        initAddonDB()
     end
 
     if (event == MAIL_SHOW) then
@@ -102,9 +158,9 @@ function onGlobalEvent(self, event)
         frame:SetScript(
             'OnUpdate',
             function(f, e)
-                waitInboxTimeout = waitInboxTimeout - e 
+                waitInboxTimeout = waitInboxTimeout - e
                 if waitInboxTimeout < 0 then
-                    removeExtraMail();
+                    removeExtraMail()
                     f:SetScript('OnUpdate', nil)
                 end
             end
@@ -128,7 +184,7 @@ function removeExtraMail()
                 local mailFrom = L['mail_from'] .. '|cff00ffff' .. sender
                 local mailHeading = L['with_heading'] .. '|cffffff00' .. heading
 
-                print('|cffFF0000[' .. ADDON_NAME .. ']: |r' .. mailFrom .. mailHeading .. L['was_removed'])
+                alert(mailFrom .. mailHeading .. L['was_removed'])
             end
         end
     end
