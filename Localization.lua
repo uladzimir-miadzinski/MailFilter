@@ -44,6 +44,7 @@ if (LOCALE == 'enUS' or LOCALE == 'enGB') then
     L['senders'] = '|cFFFFF569Ignored senders: |r';
     L['headings'] = '|cFFFFF569Ignored headings: |r';
     L['addon_reset'] = 'Addon has been reset to defaults.';
+    L['mf_reset_descr'] = 'reset addon to default values.';
     return
 end
 
@@ -75,5 +76,6 @@ if LOCALE == 'ruRU' then
     L['senders'] = '|cFFFFF569Игнорируемые отправители: |r';
     L['headings'] = '|cFFFFF569Игнорируемые заголовки: |r';
     L['addon_reset'] = 'Аддон был сброшен до значений по умолчанию.';
+    L['mf_reset_descr'] = 'сбросить аддон до значений по умолчанию';
     return
 end
