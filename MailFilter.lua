@@ -84,6 +84,7 @@ function onGlobalEvent(self, event)
         MailFilterDB = {
             ignore = {
                 senders = {
+                    '', -- addon will automatically remove mails without sender (if character was removed)
                     'nil' -- addon will automatically remove mails without sender (if character was removed)
                 },
                 headings = {}
