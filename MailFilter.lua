@@ -1,6 +1,11 @@
 local ADDON_NAME, namespace = ...
 local L = namespace.L
 
+function alert(text)
+    local addon = '|cffFF0000[' .. ADDON_NAME .. ']: |r'
+    print(addon .. text)
+end
+
 -- slash commands
 -- /mf_ignore_sender nil
 
@@ -26,35 +31,35 @@ SlashCmdList['MF'] = function(msg)
         '\n'
     )
 
-    print(title .. slashCommands .. L['credentials'])
+    alert(title .. slashCommands .. L['credentials'])
 end
 
 SlashCmdList['MF_IGNORE_SENDER'] = function(senderToIgnore)
     if (not includes(MailFilterDB.ignore.senders, senderToIgnore)) then
         table.insert(MailFilterDB.ignore.senders, senderToIgnore)
-        print(L['success'] .. senderToIgnore .. L['added_to_ignore_list'])
+        alert(L['success'] .. senderToIgnore .. L['added_to_ignore_list'])
     else
-        print(L['warning'] .. senderToIgnore .. L['already_exists'])
+        alert(L['warning'] .. senderToIgnore .. L['already_exists'])
     end
 end
 
 SlashCmdList['MF_IGNORE_HEADING'] = function(headingToIgnore)
     if (not includes(MailFilterDB.ignore.headings, headingToIgnore)) then
         table.insert(MailFilterDB.ignore.headings, headingToIgnore)
-        print(L['success'] .. headingToIgnore .. L['added_to_ignore_list'])
+        alert(L['success'] .. headingToIgnore .. L['added_to_ignore_list'])
     else
-        print(L['warning'] .. headingToIgnore .. L['already_exists'])
+        alert(L['warning'] .. headingToIgnore .. L['already_exists'])
     end
 end
 
 SlashCmdList['MF_CLEAR_SENDERS'] = function()
     MailFilterDB.ignore.senders = {}
-    print(L['success'] .. L['senders_cleared'])
+    alert(L['success'] .. L['senders_cleared'])
 end
 
 SlashCmdList['MF_CLEAR_HEADINGS'] = function()
     MailFilterDB.ignore.headings = {}
-    print(L['success'] .. L['headings_cleared'])
+    alert(L['success'] .. L['headings_cleared'])
 end
 
 -- core
@@ -102,9 +107,9 @@ function onGlobalEvent(self, event)
         frame:SetScript(
             'OnUpdate',
             function(f, e)
-                waitInboxTimeout = waitInboxTimeout - e 
+                waitInboxTimeout = waitInboxTimeout - e
                 if waitInboxTimeout < 0 then
-                    removeExtraMail();
+                    removeExtraMail()
                     f:SetScript('OnUpdate', nil)
                 end
             end
@@ -128,7 +133,7 @@ function removeExtraMail()
                 local mailFrom = L['mail_from'] .. '|cff00ffff' .. sender
                 local mailHeading = L['with_heading'] .. '|cffffff00' .. heading
 
-                print('|cffFF0000[' .. ADDON_NAME .. ']: |r' .. mailFrom .. mailHeading .. L['was_removed'])
+                alert(mailFrom .. mailHeading .. L['was_removed'])
             end
         end
     end
