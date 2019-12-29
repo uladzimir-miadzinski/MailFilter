@@ -51,6 +51,7 @@ SlashCmdList['MF'] = function(msg)
         table.concat(
         {
             '|cff00ffff /mf |r - ' .. L['this_menu'],
+            '|cff00ffff /mf_reset |r - ' .. L['mf_reset_descr'],
             '|cff00ffff /mf_ignore_sender |r- ' .. L['mf_ignore_sender_descr'],
             L['example'] .. ': |cff00ff00 /mf_ignore_sender ' .. L['goldseller'],
             '|cff00ffff /mf_ignore_heading |r- ' .. L['mf_ignore_heading_descr'],
