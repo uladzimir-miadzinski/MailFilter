@@ -1,4 +1,4 @@
-local _, namespace = ...
+local ADDON_NAME, namespace = ...
 local L = namespace.L
 
 -- slash commands
@@ -65,8 +65,8 @@ local MAIL_INBOX_UPDATE = 'MAIL_INBOX_UPDATE'
 local MAIL_SHOW = 'MAIL_SHOW'
 
 frame:RegisterEvent(ADDON_LOADED)
-frame:RegisterEvent(MAIL_INBOX_UPDATE)
 frame:RegisterEvent(MAIL_SHOW)
+frame:RegisterEvent(MAIL_INBOX_UPDATE)
 
 function includes(arr, val)
     for index, value in ipairs(arr) do
@@ -79,6 +79,8 @@ function includes(arr, val)
 end
 
 function onGlobalEvent(self, event)
+    local waitInboxTimeout = .3 -- need to wait for loading mails
+
     -- This is the first time this addon is loaded; initialize to object.
     if (event == ADDON_LOADED and MailFilterDB == nil) then
         MailFilterDB = {
@@ -97,7 +99,16 @@ function onGlobalEvent(self, event)
     end
 
     if (event == MAIL_INBOX_UPDATE) then
-        removeExtraMail()
+        frame:SetScript(
+            'OnUpdate',
+            function(f, e)
+                waitInboxTimeout = waitInboxTimeout - e 
+                if waitInboxTimeout < 0 then
+                    removeExtraMail();
+                    f:SetScript('OnUpdate', nil)
+                end
+            end
+        )
     end
 end
 
@@ -117,7 +128,7 @@ function removeExtraMail()
                 local mailFrom = L['mail_from'] .. '|cff00ffff' .. sender
                 local mailHeading = L['with_heading'] .. '|cffffff00' .. heading
 
-                print(mailFrom .. mailHeading .. L['was_removed'])
+                print('|cffFF0000[' .. ADDON_NAME .. ']: |r' .. mailFrom .. mailHeading .. L['was_removed'])
             end
         end
     end
