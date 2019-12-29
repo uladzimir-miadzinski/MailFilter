@@ -26,7 +26,11 @@ function arrToString(arr, indentLevel)
         end
     end
 
-    return string.sub(str, 0, -3) .. ']'
+    if (string.len(str) > 1) then
+        str = string.sub(str, 0, -3)
+    end
+
+    return str .. ']'
 end
 
 -- slash commands
@@ -39,6 +43,7 @@ SLASH_MF_CLEAR_SENDERS1 = '/mf_clear_senders'
 SLASH_MF_CLEAR_HEADINGS1 = '/mf_clear_headings'
 SLASH_MF_SHOW_SENDERS1 = '/mf_show_senders'
 SLASH_MF_SHOW_HEADINGS1 = '/mf_show_headings'
+SLASH_MF_RESET1 = '/mf_reset'
 
 SlashCmdList['MF'] = function(msg)
     local title = '|cff00ffff Mail Filter |r' .. L['by'] .. ' ' .. L['author'] .. '\n'
@@ -64,18 +69,18 @@ end
 SlashCmdList['MF_IGNORE_SENDER'] = function(senderToIgnore)
     if (not includes(MailFilterDB.ignore.senders, senderToIgnore)) then
         table.insert(MailFilterDB.ignore.senders, senderToIgnore)
-        alert(L['success'] .. senderToIgnore .. L['added_to_ignore_list'])
+        alert(L['success'] .. 'Отправитель \'|cFFFFF569' .. senderToIgnore .. '|r\'' .. L['added_to_ignore_list'])
     else
-        alert(L['warning'] .. senderToIgnore .. L['already_exists'])
+        alert(L['warning'] .. 'Отправитель \'|cFFFFF569' .. senderToIgnore .. '|r\'' .. L['already_exists'])
     end
 end
 
 SlashCmdList['MF_IGNORE_HEADING'] = function(headingToIgnore)
     if (not includes(MailFilterDB.ignore.headings, headingToIgnore)) then
         table.insert(MailFilterDB.ignore.headings, headingToIgnore)
-        alert(L['success'] .. headingToIgnore .. L['added_to_ignore_list'])
+        alert(L['success'] .. 'Заголовок \'|cFFFFF569' .. headingToIgnore .. '|r\'' .. L['added_to_ignore_list'])
     else
-        alert(L['warning'] .. headingToIgnore .. L['already_exists'])
+        alert(L['warning'] .. 'Заголовок \'|cFFFFF569' .. headingToIgnore .. '|r\'' .. L['already_exists'])
     end
 end
 
@@ -99,6 +104,11 @@ SlashCmdList['MF_SHOW_HEADINGS'] = function()
     alert(L['headings'] .. headings)
 end
 
+SlashCmdList['MF_RESET'] = function()
+    initAddonDB()
+    alert(L['addon_reset'])
+end
+
 -- core
 
 local frame = CreateFrame('FRAME', 'MailFilterFrame')
@@ -120,20 +130,24 @@ function includes(arr, val)
     return false
 end
 
+function initAddonDB()
+    MailFilterDB = {
+        ignore = {
+            senders = {
+                '', -- addon will automatically remove mails without sender (if character was removed)
+                'nil' -- addon will automatically remove mails without sender (if character was removed)
+            },
+            headings = {}
+        }
+    }
+end
+
 function onGlobalEvent(self, event)
     local waitInboxTimeout = .3 -- need to wait for loading mails
 
     -- This is the first time this addon is loaded; initialize to object.
     if (event == ADDON_LOADED and MailFilterDB == nil) then
-        MailFilterDB = {
-            ignore = {
-                senders = {
-                    '', -- addon will automatically remove mails without sender (if character was removed)
-                    'nil' -- addon will automatically remove mails without sender (if character was removed)
-                },
-                headings = {}
-            }
-        }
+        initAddonDB()
     end
 
     if (event == MAIL_SHOW) then

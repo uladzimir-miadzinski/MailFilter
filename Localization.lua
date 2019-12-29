@@ -29,13 +29,13 @@ if (LOCALE == 'enUS' or LOCALE == 'enGB') then
     L['goldseller'] = 'Goldseller';
     L['need_gold_heading'] = 'Do you need gold?';
     L['credentials'] = '|r\n\nThe way you can say thanks (WebMoney)\n|cff00ffff R706771842841, Z358792642716';
-    L['success'] = '|cff00ff00 Success! :) |r';
-    L['reload_for_effect'] = '|cff00ffff /reload |r to take effect.';
-    L['added_to_ignore_list'] = ' was added to ignore list.\n' .. L['reload_for_effect'];
-    L['senders_cleared'] = 'Ignore list with senders was cleared.\n' .. L['reload_for_effect'];
-    L['headings_cleared'] = 'Ignore list with headings was cleared.\n' .. L['reload_for_effect'];
+    L['success'] = '|cff00ff00Success! :) |r';
+    L['reload_for_effect'] = '|cff00ffff/reload |r to take effect.';
+    L['added_to_ignore_list'] = ' was added to ignore list. ' .. L['reload_for_effect'];
+    L['senders_cleared'] = 'Ignore list with senders was cleared. ' .. L['reload_for_effect'];
+    L['headings_cleared'] = 'Ignore list with headings was cleared. ' .. L['reload_for_effect'];
     L['already_exists'] = ' already exists in ignore list.';
-    L['warning'] = '|cffff7d0a Warning! |r';
+    L['warning'] = '|cffff7d0aWarning! |r';
     L['mail_from'] = 'Mail from ';
     L['with_heading'] = '|r with heading ';
     L['was_removed'] = '|r was removed.';
@@ -43,6 +43,7 @@ if (LOCALE == 'enUS' or LOCALE == 'enGB') then
     L['mf_show_headings_descr'] = 'show currently ignored headings.';
     L['senders'] = '|cFFFFF569Ignored senders: |r';
     L['headings'] = '|cFFFFF569Ignored headings: |r';
+    L['addon_reset'] = 'Addon has been reset to defaults.';
     return
 end
 
@@ -59,13 +60,13 @@ if LOCALE == 'ruRU' then
     L['goldseller'] = 'Продавецголды';
     L['need_gold_heading'] = 'Нужно золото?';
     L['credentials'] = '|r\n\nВы можете сказать спасибо автору аддона через WebMoney \n|cff00ffff R706771842841, Z358792642716';
-    L['success'] = '|cff00ff00 Успех! :) |r';
-    L['reload_for_effect'] = '|cff00ffff /reload |r для того, чтобы изменения вступили в силу.';
-    L['added_to_ignore_list'] = ' был добавлен в список игнорируемых.\n' .. L['reload_for_effect'];
-    L['senders_cleared'] = 'Список игнорируемых отправителей был очищен.\n' .. L['reload_for_effect'];
-    L['headings_cleared'] = 'Список игнорируемых заголовков был очищен.\n' .. L['reload_for_effect'];
+    L['success'] = '|cff00ff00Успех! :) |r';
+    L['reload_for_effect'] = '|cff00ffff/reload |r для того, чтобы изменения вступили в силу.';
+    L['added_to_ignore_list'] = ' был добавлен в список игнорируемых. ' .. L['reload_for_effect'];
+    L['senders_cleared'] = 'Список игнорируемых отправителей был очищен. ' .. L['reload_for_effect'];
+    L['headings_cleared'] = 'Список игнорируемых заголовков был очищен. ' .. L['reload_for_effect'];
     L['already_exists'] = ' уже существует в списке игнорируемых.';
-    L['warning'] = '|cffff7d0a Предупреждение! |r';
+    L['warning'] = '|cffff7d0aПредупреждение! |r';
     L['mail_from'] = 'Почта от ';
     L['with_heading'] = '|r с заголовком ';
     L['was_removed'] = '|r была удалена.';
@@ -73,5 +74,6 @@ if LOCALE == 'ruRU' then
     L['mf_show_headings_descr'] = 'показать текущий список игнорирования заголовков.';
     L['senders'] = '|cFFFFF569Игнорируемые отправители: |r';
     L['headings'] = '|cFFFFF569Игнорируемые заголовки: |r';
+    L['addon_reset'] = 'Аддон был сброшен до значений по умолчанию.';
     return
 end
