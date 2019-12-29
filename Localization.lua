@@ -39,6 +39,10 @@ if (LOCALE == 'enUS' or LOCALE == 'enGB') then
     L['mail_from'] = 'Mail from ';
     L['with_heading'] = '|r with heading ';
     L['was_removed'] = '|r was removed.';
+    L['mf_show_senders_descr'] = 'show currently ignored senders.';
+    L['mf_show_headings_descr'] = 'show currently ignored headings.';
+    L['senders'] = '|cFFFFF569Ignored senders: |r';
+    L['headings'] = '|cFFFFF569Ignored headings: |r';
     return
 end
 
@@ -65,5 +69,9 @@ if LOCALE == 'ruRU' then
     L['mail_from'] = 'Почта от ';
     L['with_heading'] = '|r с заголовком ';
     L['was_removed'] = '|r была удалена.';
+    L['mf_show_senders_descr'] = 'показать текущий список игнорирования отправителей.';
+    L['mf_show_headings_descr'] = 'показать текущий список игнорирования заголовков.';
+    L['senders'] = '|cFFFFF569Игнорируемые отправители: |r';
+    L['headings'] = '|cFFFFF569Игнорируемые заголовки: |r';
     return
 end

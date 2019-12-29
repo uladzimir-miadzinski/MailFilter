@@ -6,6 +6,29 @@ function alert(text)
     print(addon .. text)
 end
 
+function arrToString(arr, indentLevel)
+    local str = '['
+    local indentStr = ''
+
+    if (indentLevel == nil) then
+        return arrToString(arr, 0)
+    end
+
+    for i = 0, indentLevel do
+        indentStr = indentStr .. '\t'
+    end
+
+    for index, value in pairs(arr) do
+        if type(value) == 'table' then
+            str = str .. indentStr .. index .. ': \n' .. arrToString(value, (indentLevel + 1))
+        else
+            str = str .. "'" .. value .. "', "
+        end
+    end
+
+    return string.sub(str, 0, -3) .. ']'
+end
+
 -- slash commands
 -- /mf_ignore_sender nil
 
@@ -14,6 +37,8 @@ SLASH_MF_IGNORE_SENDER1 = '/mf_ignore_sender'
 SLASH_MF_IGNORE_HEADING1 = '/mf_ignore_heading'
 SLASH_MF_CLEAR_SENDERS1 = '/mf_clear_senders'
 SLASH_MF_CLEAR_HEADINGS1 = '/mf_clear_headings'
+SLASH_MF_SHOW_SENDERS1 = '/mf_show_senders'
+SLASH_MF_SHOW_HEADINGS1 = '/mf_show_headings'
 
 SlashCmdList['MF'] = function(msg)
     local title = '|cff00ffff Mail Filter |r' .. L['by'] .. ' ' .. L['author'] .. '\n'
@@ -26,7 +51,9 @@ SlashCmdList['MF'] = function(msg)
             '|cff00ffff /mf_ignore_heading |r- ' .. L['mf_ignore_heading_descr'],
             L['example'] .. ': |cff00ff00 /mf_ignore_heading ' .. L['need_gold_heading'],
             '|cff00ffff /mf_clear_senders |r- ' .. L['mf_clear_senders_descr'],
-            '|cff00ffff /mf_clear_headings |r- ' .. L['mf_clear_headings_descr']
+            '|cff00ffff /mf_clear_headings |r- ' .. L['mf_clear_headings_descr'],
+            '|cff00ffff /mf_show_senders |r- ' ..
+                L['mf_show_senders_descr'] '|cff00ffff /mf_show_headings |r- ' .. L['mf_show_headings_descr']
         },
         '\n'
     )
@@ -60,6 +87,16 @@ end
 SlashCmdList['MF_CLEAR_HEADINGS'] = function()
     MailFilterDB.ignore.headings = {}
     alert(L['success'] .. L['headings_cleared'])
+end
+
+SlashCmdList['MF_SHOW_SENDERS'] = function()
+    local senders = arrToString(MailFilterDB.ignore.senders)
+    alert(L['senders'] .. senders)
+end
+
+SlashCmdList['MF_SHOW_HEADINGS'] = function()
+    local headings = arrToString(MailFilterDB.ignore.headings)
+    alert(L['headings'] .. headings)
 end
 
 -- core
