@@ -7,3 +7,4 @@
 
 Localization.lua
 MailFilter.lua
+MailFilter.xml
