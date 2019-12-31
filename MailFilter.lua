@@ -3,6 +3,34 @@ local L = namespace.L
 local ADDON_LOADED = "ADDON_LOADED"
 local MAIL_INBOX_UPDATE = "MAIL_INBOX_UPDATE"
 local MAIL_SHOW = "MAIL_SHOW"
+local Colors = {
+    LIGHTRED = "|cffff6060",
+    LIGHTBLUE = "|cff00ccff",
+    TORQUISEBLUE = "|cff00C78C",
+    SPRINGGREEN = "|cff00FF7F",
+    GREENYELLOW = "|cffADFF2F",
+    BLUE = "|cff0000ff",
+    PURPLE = "|cffDA70D6",
+    GREEN = "|cff00ff00",
+    RED = "|cffff0000",
+    GOLD = "|cffffcc00",
+    GOLD2 = "|cffFFC125",
+    GREY = "|cff888888",
+    WHITE = "|cffffffff",
+    SUBWHITE = "|cffbbbbbb",
+    MAGENTA = "|cffff00ff",
+    YELLOW = "|cffffff00",
+    ORANGEY = "|cffFF4500",
+    CHOCOLATE = "|cffCD661D",
+    CYAN = "|cff00ffff",
+    IVORY = "|cff8B8B83",
+    LIGHTYELLOW = "|cffFFFFE0",
+    SEXGREEN = "|cff71C671",
+    SEXTEAL = "|cff388E8E",
+    SEXPINK = "|cffC67171",
+    SEXBLUE = "|cff00E5EE",
+    SEXHOTPINK = "|cffFF6EB4"
+}
 
 --------------------------------------------------------------------------------
 --  HELPERS
@@ -38,6 +66,7 @@ function arrToString(arr, indentLevel)
 
     return str .. "]"
 end
+--
 
 --------------------------------------------------------------------------------
 --  SLASH COMMANDS
@@ -49,9 +78,8 @@ end
     /mf show [senders|subjects]? - show frame | show list of ignored senders/subjects
     /mf [i|ignore] [sender|subject] %arg% - add smth to ignored senders/subjects list
     /mf hide - hide frame
-]]--
-
-SLASH_MF1 = "/mf"
+]] SLASH_MF1 =
+    "/mf"
 
 SlashCmdList["MF"] = function(arg)
     local action, category, param = strsplit(" ", arg)
@@ -61,15 +89,25 @@ SlashCmdList["MF"] = function(arg)
     end
 
     if (action == "show") then
-        if (category == 'senders') then
-            return showSenders();
-        end;
+        if (category == "senders") then
+            return showSenders()
+        end
 
-        if (category == 'subjects') then
-            return showSubjects();
-        end;
+        if (category == "subjects") then
+            return showSubjects()
+        end
 
         return MailFilterFrame:Show()
+    end
+
+    if (action == "clear") then
+        if (category == "senders") then
+            return clearSenders()
+        end
+
+        if (category == "subjects") then
+            return clearSubjects()
+        end
     end
 
     if (action == "i" or action == "ignore") then
@@ -98,7 +136,7 @@ function addToIgnoreCategory(category, text)
 end
 
 function ignoreSender(sender)
-    local coloredSender = L["sender"] .. "'|cFFFFF569 " .. sender .. "|r'";
+    local coloredSender = L["sender"] .. "'|cFFFFF569 " .. sender .. "|r'"
 
     if (not includes(MailFilterDB.ignore.senders, sender)) then
         table.insert(MailFilterDB.ignore.senders, sender)
@@ -109,7 +147,7 @@ function ignoreSender(sender)
 end
 
 function ignoreSubject(subject)
-    local coloredSubject = "Заголовок '|cFFFFF569" .. subject .. "|r'";
+    local coloredSubject = "Заголовок '|cFFFFF569" .. subject .. "|r'"
 
     if (not includes(MailFilterDB.ignore.subjects, subject)) then
         table.insert(MailFilterDB.ignore.subjects, subject)
@@ -124,16 +162,16 @@ function showAddonHelp()
     local slashCommands =
         table.concat(
         {
-            "|cff00ffff /mf |r - " .. L["this_menu"],
-            "|cff00ffff /mf_reset |r - " .. L["mf_reset_descr"],
-            "|cff00ffff /mf_ignore_sender |r- " .. L["mf_ignore_sender_descr"],
-            L["example"] .. ": |cff00ff00 /mf_ignore_sender " .. L["goldseller"],
-            "|cff00ffff /mf_ignore_subject |r- " .. L["mf_ignore_subject_descr"],
-            L["example"] .. ": |cff00ff00 /mf_ignore_subject " .. L["need_gold_subject"],
-            "|cff00ffff /mf_clear_senders |r- " .. L["mf_clear_senders_descr"],
-            "|cff00ffff /mf_clear_subjects |r- " .. L["mf_clear_subjects_descr"],
-            "|cff00ffff /mf_show_senders |r- " .. L["mf_show_senders_descr"],
-            "|cff00ffff /mf_show_subjects |r- " .. L["mf_show_subjects_descr"]
+            Colors.CYAN .. "/mf|r - " .. L["this_menu"],
+            Colors.CYAN .. "/mf reset|r - " .. L["mf_reset_descr"],
+            Colors.CYAN .. "/mf [ i, ignore ] [ sender, subject ]|r - " .. L["mf_ignore_descr"],
+            L["example"] .. Colors.GREEN .. "/mf i sender " .. L["goldseller"] .. "|r",
+            L["example"] .. Colors.GREEN .. "/mf i subject " .. L["need_gold_subject"] .. "|r",
+            Colors.CYAN .. "/mf clear [ senders, subjects ]|r - " .. L["mf_clear_descr"],
+            L["example"] .. Colors.GREEN .. "/mf clear subjects",
+            Colors.CYAN .. "/mf show [ senders, subjects ]|r - " .. L["mf_show_descr"],
+            L["example"] .. Colors.GREEN .. "/mf show|r",
+            L["example"] .. Colors.GREEN .. "/mf show senders|r"
         },
         "\n"
     )
