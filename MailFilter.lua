@@ -10,7 +10,7 @@ local MAIL_SHOW = "MAIL_SHOW"
 --------------------------------------------------------------------------------
 
 function alert(text)
-    print("|cffFF0000[" .. ADDON_NAME .. "]: |r" .. text)
+    print(C.RED .. "[" .. ADDON_NAME .. "]: |r" .. text)
 end
 
 function arrToString(arr, indentLevel)
@@ -109,7 +109,7 @@ function addToIgnoreCategory(category, text)
 end
 
 function ignoreSender(sender)
-    local coloredSender = L["sender"] .. "'|cFFFFF569 " .. sender .. "|r'"
+    local coloredSender = L["sender"] .. "'" .. C.YELLOW .. sender .. "|r'"
 
     if (not includes(MailFilterDB.ignore.senders, sender)) then
         table.insert(MailFilterDB.ignore.senders, sender)
@@ -120,7 +120,7 @@ function ignoreSender(sender)
 end
 
 function ignoreSubject(subject)
-    local coloredSubject = "Заголовок '|cFFFFF569" .. subject .. "|r'"
+    local coloredSubject = "Заголовок '" .. C.YELLOW .. subject .. "|r'"
 
     if (not includes(MailFilterDB.ignore.subjects, subject)) then
         table.insert(MailFilterDB.ignore.subjects, subject)
@@ -131,7 +131,7 @@ function ignoreSubject(subject)
 end
 
 function showAddonHelp()
-    local title = "\n|cff00ffffMail Filter |r" .. L["by"] .. " " .. L["author"] .. "\n"
+    local title = C.CYAN .. "\n" .. ADDON_NAME .. "|r " .. L["by"] .. " " .. L["author"] .. "\n"
     local slashCommands =
         table.concat(
         {
@@ -146,7 +146,7 @@ function showAddonHelp()
             L["example"] .. C.GREEN .. "/mf show|r",
             L["example"] .. C.GREEN .. "/mf show senders|r",
             C.CYAN .. "/mf hide|r - " .. L["mf_hide_descr"],
-            L["example"] .. C.GREEN .. "/mf hide|r",
+            L["example"] .. C.GREEN .. "/mf hide|r"
         },
         "\n"
     )
@@ -242,8 +242,8 @@ function removeExtraMail()
             -- for 0.1 version let it be strict equal comparison
             if (includes(MailFilterDB.ignore.senders, sender) or includes(MailFilterDB.ignore.subjects, subject)) then
                 DeleteInboxItem(index)
-                local mailFrom = L["mail_from"] .. "|cff00ffff" .. sender
-                local mailSubject = L["with_subject"] .. "|cffffff00" .. subject
+                local mailFrom = L["mail_from"] .. C.CYAN .. sender
+                local mailSubject = L["with_subject"] .. C.YELLOW .. subject
 
                 alert(mailFrom .. mailSubject .. L["was_removed"])
             end

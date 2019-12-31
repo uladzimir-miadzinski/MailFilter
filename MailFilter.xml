@@ -14,6 +14,12 @@
             </Layer>
         </Layers>
         <Frames>
+            <Button name="MyAddonSpecialButton" parent="MailFilterFrame">
+                <Size><AbsDimension x="40" y="22"/></Size>
+                <ButtonText name="MyAddonSpecialButtonText"/>
+                <NormalFont inherits="GameFontNormal"/>
+                <HighlightFont inherits="GameFontHighlight"/>
+            </Button>
             <Button name="MyAddon_Button">
                 <Anchors>
                     <Anchor point="CENTER"/>
