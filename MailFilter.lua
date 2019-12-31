@@ -109,7 +109,7 @@ function addToIgnoreCategory(category, text)
 end
 
 function ignoreSender(sender)
-    local coloredSender = L["sender"] .. "'" .. C.YELLOW .. sender .. "|r'"
+    local coloredSender = L["sender"] .. " '" .. C.YELLOW .. sender .. "|r'"
 
     if (not includes(MailFilterDB.ignore.senders, sender)) then
         table.insert(MailFilterDB.ignore.senders, sender)
@@ -256,4 +256,15 @@ function onLoad()
     MailFilterFrame:RegisterEvent(MAIL_SHOW)
     MailFilterFrame:RegisterEvent(MAIL_INBOX_UPDATE)
     MailFilterFrame:SetScript("OnEvent", onGlobalEvent)
+    MailFilterFrame:RegisterForDrag("LeftButton")
+    MailFilterFrame:SetBackdrop(
+        {
+            bgFile = "Interface/DialogFrame/UI-DialogBox-Background",
+            edgeFile = "Interface/DialogFrame/UI-DialogBox-Border",
+            tileSize = 16,
+            edgeSize = 16,
+            insets = {left = 5, right = 5, top = 5, bottom = 5}
+        }
+    )
+    CloseButton:SetText(L["close_btn"])
 end

@@ -46,6 +46,7 @@ if (LOCALE == "enUS" or LOCALE == "enGB") then
     L["addon_reset"] = "Addon has been reset to defaults."
     L["mf_reset_descr"] = "reset addon to default values."
     L["mf_hide_descr"] = "hide addon ui frame."
+    L["close_btn"] = "Close"
     return
 end
 
@@ -80,5 +81,6 @@ if LOCALE == "ruRU" then
     L["addon_reset"] = "Аддон был сброшен до значений по умолчанию."
     L["mf_reset_descr"] = "сбросить аддон до значений по умолчанию."
     L["mf_hide_descr"] = "скрыть окно аддона."
+    L["close_btn"] = "Закрыть"
     return
 end

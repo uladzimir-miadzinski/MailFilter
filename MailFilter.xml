@@ -1,29 +1,30 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
-    
-    <Frame name="MailFilterFrame" parent="UIParent" movable="true">
-        <Size x="300" y="300"/>
+    <Frame name="MailFilterFrame" parent="UIParent" movable="true" enableMouse="true">
+        <Size x="640" y="480"/>
+        
         <Anchors>
             <Anchor point="CENTER"/>
         </Anchors>
-        <Layers>
-            <Layer level="BACKGROUND">
-                <Texture setAllPoints="true">
-                    <color r="0" g="1" b="0" a="0.5"/>
-                </Texture>
-            </Layer>
-        </Layers>
+
+
         <Frames>
-            <Button name="MyAddonSpecialButton" parent="MailFilterFrame">
-                <Size><AbsDimension x="40" y="22"/></Size>
-                <ButtonText name="MyAddonSpecialButtonText"/>
-                <NormalFont inherits="GameFontNormal"/>
-                <HighlightFont inherits="GameFontHighlight"/>
-            </Button>
-            <Button name="MyAddon_Button">
+            <Button name="CloseButton" inherits="UIPanelButtonTemplate">
+                <Size>
+                    <AbsDimension x="64" y="24"/>
+                </Size>
                 <Anchors>
-                    <Anchor point="CENTER"/>
+                    <Anchor point="TOPRIGHT">
+                        <Offset>
+                            <AbsDimension x="-7" y="-7"/>
+                        </Offset>
+                    </Anchor>
                 </Anchors>
+                <Scripts>
+                    <OnClick>
+                        self:GetParent():Hide();
+                    </OnClick>
+                </Scripts>
             </Button>
         </Frames>
 
@@ -31,6 +32,12 @@
             <OnLoad>
 			    onLoad();
             </OnLoad>
+            <OnDragStart>
+                self:StartMoving();
+            </OnDragStart>
+            <OnDragStop>
+                self:StopMovingOrSizing();
+            </OnDragStop>
         </Scripts>
     </Frame>
 </Ui>
