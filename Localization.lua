@@ -12,7 +12,7 @@ local L =
     }
 )
 
-namespace.L = L
+namespace.Localization = L
 
 local LOCALE = GetLocale()
 
@@ -26,7 +26,7 @@ if (LOCALE == 'enUS' or LOCALE == 'enGB') then
     L['example'] = 'Example: ';
     L['goldseller'] = 'Goldseller';
     L['need_gold_subject'] = 'Do you need gold?';
-    L['credentials'] = '|r\n\nThe way you can say thanks (WebMoney)\n|cff00ffff R706771842841, Z358792642716';
+    L['credentials'] = '|r\n\nThe way you can say thanks (WebMoney)\n|cff00ffffR706771842841, Z358792642716';
     L['success'] = '|cff00ff00Success! :) |r';
     L['reload_for_effect'] = '|cff00ffff/reload |r to take effect.';
     L['added_to_ignore_list'] = ' was added to ignore list. ' .. L['reload_for_effect'];
@@ -44,6 +44,7 @@ if (LOCALE == 'enUS' or LOCALE == 'enGB') then
     L['subject'] = 'Subject';
     L['addon_reset'] = 'Addon has been reset to defaults.';
     L['mf_reset_descr'] = 'reset addon to default values.';
+    L['mf_hide_descr'] = 'hide addon ui frame.';
     return
 end
 
@@ -57,7 +58,7 @@ if LOCALE == 'ruRU' then
     L['example'] = 'Пример: ';
     L['goldseller'] = 'Продавецголды';
     L['need_gold_subject'] = 'Нужно золото?';
-    L['credentials'] = '|r\n\nВы можете сказать спасибо автору аддона через WebMoney \n|cff00ffff R706771842841, Z358792642716';
+    L['credentials'] = '|r\n\nВы можете сказать спасибо автору аддона через WebMoney \n|cff00ffffR706771842841, Z358792642716';
     L['success'] = '|cff00ff00Успех! :) |r';
     L['reload_for_effect'] = '|cff00ffff/reload |r для того, чтобы изменения вступили в силу.';
     L['added_to_ignore_list'] = ' был добавлен в список игнорируемых. ' .. L['reload_for_effect'];
@@ -74,6 +75,7 @@ if LOCALE == 'ruRU' then
     L['sender'] = 'Отправитель';
     L['subject'] = 'Заголовок';
     L['addon_reset'] = 'Аддон был сброшен до значений по умолчанию.';
-    L['mf_reset_descr'] = 'сбросить аддон до значений по умолчанию';
+    L['mf_reset_descr'] = 'сбросить аддон до значений по умолчанию.';
+    L['mf_hide_descr'] = 'скрыть окно аддона.';
     return
 end

@@ -1,36 +1,9 @@
 local ADDON_NAME, namespace = ...
-local L = namespace.L
+local L = namespace.Localization
+local C = namespace.Colors
 local ADDON_LOADED = "ADDON_LOADED"
 local MAIL_INBOX_UPDATE = "MAIL_INBOX_UPDATE"
 local MAIL_SHOW = "MAIL_SHOW"
-local Colors = {
-    LIGHTRED = "|cffff6060",
-    LIGHTBLUE = "|cff00ccff",
-    TORQUISEBLUE = "|cff00C78C",
-    SPRINGGREEN = "|cff00FF7F",
-    GREENYELLOW = "|cffADFF2F",
-    BLUE = "|cff0000ff",
-    PURPLE = "|cffDA70D6",
-    GREEN = "|cff00ff00",
-    RED = "|cffff0000",
-    GOLD = "|cffffcc00",
-    GOLD2 = "|cffFFC125",
-    GREY = "|cff888888",
-    WHITE = "|cffffffff",
-    SUBWHITE = "|cffbbbbbb",
-    MAGENTA = "|cffff00ff",
-    YELLOW = "|cffffff00",
-    ORANGEY = "|cffFF4500",
-    CHOCOLATE = "|cffCD661D",
-    CYAN = "|cff00ffff",
-    IVORY = "|cff8B8B83",
-    LIGHTYELLOW = "|cffFFFFE0",
-    SEXGREEN = "|cff71C671",
-    SEXTEAL = "|cff388E8E",
-    SEXPINK = "|cffC67171",
-    SEXBLUE = "|cff00E5EE",
-    SEXHOTPINK = "|cffFF6EB4"
-}
 
 --------------------------------------------------------------------------------
 --  HELPERS
@@ -158,20 +131,22 @@ function ignoreSubject(subject)
 end
 
 function showAddonHelp()
-    local title = "|cff00ffff Mail Filter |r" .. L["by"] .. " " .. L["author"] .. "\n"
+    local title = "\n|cff00ffffMail Filter |r" .. L["by"] .. " " .. L["author"] .. "\n"
     local slashCommands =
         table.concat(
         {
-            Colors.CYAN .. "/mf|r - " .. L["this_menu"],
-            Colors.CYAN .. "/mf reset|r - " .. L["mf_reset_descr"],
-            Colors.CYAN .. "/mf [ i, ignore ] [ sender, subject ]|r - " .. L["mf_ignore_descr"],
-            L["example"] .. Colors.GREEN .. "/mf i sender " .. L["goldseller"] .. "|r",
-            L["example"] .. Colors.GREEN .. "/mf i subject " .. L["need_gold_subject"] .. "|r",
-            Colors.CYAN .. "/mf clear [ senders, subjects ]|r - " .. L["mf_clear_descr"],
-            L["example"] .. Colors.GREEN .. "/mf clear subjects",
-            Colors.CYAN .. "/mf show [ senders, subjects ]|r - " .. L["mf_show_descr"],
-            L["example"] .. Colors.GREEN .. "/mf show|r",
-            L["example"] .. Colors.GREEN .. "/mf show senders|r"
+            C.CYAN .. "/mf|r - " .. L["this_menu"],
+            C.CYAN .. "/mf reset|r - " .. L["mf_reset_descr"],
+            C.CYAN .. "/mf [ i, ignore ] [ sender, subject ]|r - " .. L["mf_ignore_descr"],
+            L["example"] .. C.GREEN .. "/mf i sender " .. L["goldseller"] .. "|r",
+            L["example"] .. C.GREEN .. "/mf i subject " .. L["need_gold_subject"] .. "|r",
+            C.CYAN .. "/mf clear [ senders, subjects ]|r - " .. L["mf_clear_descr"],
+            L["example"] .. C.GREEN .. "/mf clear subjects",
+            C.CYAN .. "/mf show [ senders, subjects ]|r - " .. L["mf_show_descr"],
+            L["example"] .. C.GREEN .. "/mf show|r",
+            L["example"] .. C.GREEN .. "/mf show senders|r",
+            C.CYAN .. "/mf hide|r - " .. L["mf_hide_descr"],
+            L["example"] .. C.GREEN .. "/mf hide|r",
         },
         "\n"
     )

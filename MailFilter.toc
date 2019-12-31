@@ -5,6 +5,7 @@
 ## Version 0.0.2
 ## SavedVariables: MailFilterDB
 
+Colors.lua
 Localization.lua
 MailFilter.lua
 MailFilter.xml
