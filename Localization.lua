@@ -40,7 +40,11 @@ if (LOCALE == "enUS" or LOCALE == "enGB") then
     L["was_removed"] = "|r was removed."
     L["mf_show_descr"] = "show addon ui frame or (with params) show currently ignored senders or subjects."
     L["senders"] = C.YELLOW .. "Ignored senders: |r"
+    L["senders_label"] = "Ignored senders:"
+    L["list_senders"] = "Senders"
     L["subjects"] = C.YELLOW .. "Ignored subjects: |r"
+    L["subjects_label"] = "Ignored subjects:"
+    L["list_subjects"] = "Subjects"
     L["sender"] = "Sender"
     L["subject"] = "Subject"
     L["addon_reset"] = "Addon has been reset to defaults."
@@ -48,7 +52,7 @@ if (LOCALE == "enUS" or LOCALE == "enGB") then
     L["mf_hide_descr"] = "hide addon ui frame."
     L["close_btn"] = "Close"
     L["select_ignore_list"] = "Ignore list"
-    L['add_to_ignore_list'] = "Add to ignore"
+    L['add_to_ignore_list'] = "Add text to list"
     L['ignore_text'] = "Ignore text:"
     return
 end
@@ -78,7 +82,11 @@ if LOCALE == "ruRU" then
     L["mf_show_descr"] =
         "показать окно аддона или (с параметрами) показать текущий список игнорирования отправителей или заголовков."
     L["senders"] = C.YELLOW .. "Игнорируемые отправители: |r"
+    L["senders_label"] = "Игнорируемые отправители:"
+    L["list_senders"] = "Отправители писем"
     L["subjects"] = C.YELLOW .. "Игнорируемые заголовки: |r"
+    L["subjects_label"] = "Игнорируемые заголовки:"
+    L["list_subjects"] = "Заголовки писем"
     L["sender"] = "Отправитель"
     L["subject"] = "Заголовок"
     L["addon_reset"] = "Аддон был сброшен до значений по умолчанию."
@@ -86,7 +94,7 @@ if LOCALE == "ruRU" then
     L["mf_hide_descr"] = "скрыть окно аддона."
     L["close_btn"] = "Закрыть"
     L["select_ignore_list"] = "Список игнорирования"
-    L['add_to_ignore_list'] = "Добавить в игнор"
+    L['add_to_ignore_list'] = "Добавить текст в список"
     L['ignore_text'] = "Игнорировать текст:"
     return
 end

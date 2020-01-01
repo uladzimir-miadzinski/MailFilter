@@ -3,7 +3,7 @@ local L = namespace.Localization
 local C = namespace.Colors
 local ADDON_LOADED = "ADDON_LOADED"
 local MAIL_INBOX_UPDATE = "MAIL_INBOX_UPDATE"
-local MAIL_SHOW = "MAIL_SHOW"
+local VARIABLES_LOADED = "VARIABLES_LOADED"
 local AceGUI = LibStub("AceGUI-3.0")
 local MailFilter = LibStub("AceAddon-3.0"):NewAddon(ADDON_NAME, "AceEvent-3.0", "AceTimer-3.0")
 
@@ -23,6 +23,12 @@ function MailFilter:MAIL_INBOX_UPDATE()
     self:ScheduleTimer("WaitMailInbox", 0.2) -- need to wait for loading mails
 end
 
+    
+function MailFilter:VARIABLES_LOADED()
+    init()
+end;
+
+MailFilter:RegisterEvent(VARIABLES_LOADED)
 MailFilter:RegisterEvent(ADDON_LOADED)
 MailFilter:RegisterEvent(MAIL_INBOX_UPDATE)
 
@@ -271,13 +277,13 @@ end
 function getDropdownIgnoreLists()
     local dropdown = AceGUI:Create("Dropdown")
     local ignoreLists = {
-        Senders = "Senders",
-        Subjects = "Subjects"
+        L["list_senders"],
+        L["list_subjects"]
     }
 
     dropdown:SetWidth(200)
     dropdown:SetList(ignoreLists)
-    dropdown:SetValue(ignoreLists.Senders)
+    dropdown:SetValue(1)
     dropdown:SetLabel(L["select_ignore_list"])
 
     return dropdown
@@ -286,27 +292,58 @@ end
 function getEditBoxIgnoreText()
     local editbox = AceGUI:Create("EditBox")
 
-    editbox:SetLabel("Игнорировать:")
+    editbox:SetLabel(L["ignore_text"])
     editbox:SetWidth(200)
     editbox:DisableButton(true)
 
     return editbox
 end
 
+function releaseWidget(widget)
+    AceGUI:Release(widget)
+end
+
 function setupMailFilterFrame()
     local MailFilterFrame = AceGUI:Create("Frame")
-    MailFilterFrame:SetCallback(
-        "OnClose",
-        function(widget)
-            AceGUI:Release(widget)
-        end
-    )
+    MailFilterFrame:SetCallback("OnClose", releaseWidget)
     MailFilterFrame:SetTitle("Mail Filter v0.1.0")
-    MailFilterFrame:SetStatusText("Addon loaded")
+    MailFilterFrame:SetStatusText(L["Addon_loaded"])
     MailFilterFrame:SetLayout("Flow")
+    MailFilterFrame:SetWidth(635)
+    MailFilterFrame:SetHeight(480)
     MailFilterFrame:Show()
 
     return MailFilterFrame
+end
+
+function getListPane(title, ignoreList)
+    local pane = AceGUI:Create("SimpleGroup")
+    pane:SetLayout("List")
+
+    local scrollcontainer = AceGUI:Create("SimpleGroup")
+    scrollcontainer:SetWidth(295)
+    scrollcontainer:SetHeight(334)
+    scrollcontainer:SetLayout("Fill")
+
+    local sendersScrollPaneLabel = AceGUI:Create("Label")
+    sendersScrollPaneLabel:SetText(title)
+    sendersScrollPaneLabel:SetHeight(15)
+    sendersScrollPaneLabel:SetColor(0.94, 0.77, 0)
+
+    local scroll = AceGUI:Create("ScrollFrame")
+    scroll:SetLayout("List")
+    scrollcontainer:AddChild(scroll)
+
+    for i, ignoreText in ipairs(ignoreList) do
+        local label = AceGUI:Create("Label")
+        label:SetText(ignoreText)
+        scroll:AddChild(label)
+    end
+
+    pane:AddChild(sendersScrollPaneLabel)
+    pane:AddChild(scrollcontainer)
+
+    return pane
 end
 
 function init()
@@ -318,6 +355,10 @@ function init()
     MailFilterFrame:AddChild(editBoxIgnoreText)
     MailFilterFrame:AddChild(dropdownIgnoreLists)
     MailFilterFrame:AddChild(buttonAddToIgnoreList)
-end
 
-init()
+    local sendersPane = getListPane(L["senders_label"], MailFilterDB.ignore.senders)
+    local subjectsPane = getListPane(L["subjects_label"], MailFilterDB.ignore.subjects)
+
+    MailFilterFrame:AddChild(sendersPane)
+    MailFilterFrame:AddChild(subjectsPane)
+end
