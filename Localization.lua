@@ -47,6 +47,9 @@ if (LOCALE == "enUS" or LOCALE == "enGB") then
     L["mf_reset_descr"] = "reset addon to default values."
     L["mf_hide_descr"] = "hide addon ui frame."
     L["close_btn"] = "Close"
+    L["select_ignore_list"] = "Ignore list"
+    L['add_to_ignore_list'] = "Add to ignore"
+    L['ignore_text'] = "Ignore text:"
     return
 end
 
@@ -82,5 +85,8 @@ if LOCALE == "ruRU" then
     L["mf_reset_descr"] = "сбросить аддон до значений по умолчанию."
     L["mf_hide_descr"] = "скрыть окно аддона."
     L["close_btn"] = "Закрыть"
+    L["select_ignore_list"] = "Список игнорирования"
+    L['add_to_ignore_list'] = "Добавить в игнор"
+    L['ignore_text'] = "Игнорировать текст:"
     return
 end

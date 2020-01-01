@@ -4,6 +4,27 @@ local C = namespace.Colors
 local ADDON_LOADED = "ADDON_LOADED"
 local MAIL_INBOX_UPDATE = "MAIL_INBOX_UPDATE"
 local MAIL_SHOW = "MAIL_SHOW"
+local AceGUI = LibStub("AceGUI-3.0")
+local MailFilter = LibStub("AceAddon-3.0"):NewAddon(ADDON_NAME, "AceEvent-3.0", "AceTimer-3.0")
+
+function MailFilter:WaitMailInbox()
+    self:CancelAllTimers()
+    removeExtraMail()
+end
+
+function MailFilter:ADDON_LOADED()
+    -- This is the first time this addon is loaded; initialize to object.
+    if (MailFilterDB == nil) then
+        initAddonDB()
+    end
+end
+
+function MailFilter:MAIL_INBOX_UPDATE()
+    self:ScheduleTimer("WaitMailInbox", 0.2) -- need to wait for loading mails
+end
+
+MailFilter:RegisterEvent(ADDON_LOADED)
+MailFilter:RegisterEvent(MAIL_INBOX_UPDATE)
 
 --------------------------------------------------------------------------------
 --  HELPERS
@@ -70,7 +91,7 @@ SlashCmdList["MF"] = function(arg)
             return showSubjects()
         end
 
-        return MailFilterFrame:Show()
+        return init()
     end
 
     if (action == "clear") then
@@ -203,32 +224,6 @@ function initAddonDB()
     }
 end
 
-function onGlobalEvent(self, event)
-    local waitInboxTimeout = .2 -- need to wait for loading mails
-
-    -- This is the first time this addon is loaded; initialize to object.
-    if (event == ADDON_LOADED and MailFilterDB == nil) then
-        initAddonDB()
-    end
-
-    if (event == MAIL_SHOW) then
-        CheckInbox()
-    end
-
-    if (event == MAIL_INBOX_UPDATE) then
-        MailFilterFrame:SetScript(
-            "OnUpdate",
-            function(f, e)
-                waitInboxTimeout = waitInboxTimeout - e
-                if waitInboxTimeout < 0 then
-                    removeExtraMail()
-                    f:SetScript("OnUpdate", nil)
-                end
-            end
-        )
-    end
-end
-
 function removeExtraMail()
     local mailsCount = GetInboxNumItems()
 
@@ -251,20 +246,78 @@ function removeExtraMail()
     end
 end
 
-function onLoad()
-    MailFilterFrame:RegisterEvent(ADDON_LOADED)
-    MailFilterFrame:RegisterEvent(MAIL_SHOW)
-    MailFilterFrame:RegisterEvent(MAIL_INBOX_UPDATE)
-    MailFilterFrame:SetScript("OnEvent", onGlobalEvent)
-    MailFilterFrame:RegisterForDrag("LeftButton")
-    MailFilterFrame:SetBackdrop(
-        {
-            bgFile = "Interface/DialogFrame/UI-DialogBox-Background",
-            edgeFile = "Interface/DialogFrame/UI-DialogBox-Border",
-            tileSize = 16,
-            edgeSize = 16,
-            insets = {left = 5, right = 5, top = 5, bottom = 5}
-        }
+function getButtonAddToIgnoreList(editBoxIgnoreText, dropdownIgnoreLists)
+    local btn = AceGUI:Create("Button")
+
+    btn:SetWidth(200)
+    btn:SetText(L["add_to_ignore_list"])
+    btn:SetCallback(
+        "OnClick",
+        function()
+            local ignoreText = editBoxIgnoreText:GetText()
+            local ignoreList = dropdownIgnoreLists:GetValue()
+
+            if (ignoreText == nil) then
+                ignoreText = ""
+            end
+            alert(ignoreText)
+            alert(ignoreList)
+        end
     )
-    CloseButton:SetText(L["close_btn"])
+
+    return btn
 end
+
+function getDropdownIgnoreLists()
+    local dropdown = AceGUI:Create("Dropdown")
+    local ignoreLists = {
+        Senders = "Senders",
+        Subjects = "Subjects"
+    }
+
+    dropdown:SetWidth(200)
+    dropdown:SetList(ignoreLists)
+    dropdown:SetValue(ignoreLists.Senders)
+    dropdown:SetLabel(L["select_ignore_list"])
+
+    return dropdown
+end
+
+function getEditBoxIgnoreText()
+    local editbox = AceGUI:Create("EditBox")
+
+    editbox:SetLabel("Игнорировать:")
+    editbox:SetWidth(200)
+    editbox:DisableButton(true)
+
+    return editbox
+end
+
+function setupMailFilterFrame()
+    local MailFilterFrame = AceGUI:Create("Frame")
+    MailFilterFrame:SetCallback(
+        "OnClose",
+        function(widget)
+            AceGUI:Release(widget)
+        end
+    )
+    MailFilterFrame:SetTitle("Mail Filter v0.1.0")
+    MailFilterFrame:SetStatusText("Addon loaded")
+    MailFilterFrame:SetLayout("Flow")
+    MailFilterFrame:Show()
+
+    return MailFilterFrame
+end
+
+function init()
+    local MailFilterFrame = setupMailFilterFrame()
+    local editBoxIgnoreText = getEditBoxIgnoreText()
+    local dropdownIgnoreLists = getDropdownIgnoreLists()
+    local buttonAddToIgnoreList = getButtonAddToIgnoreList(editBoxIgnoreText, dropdownIgnoreLists)
+
+    MailFilterFrame:AddChild(editBoxIgnoreText)
+    MailFilterFrame:AddChild(dropdownIgnoreLists)
+    MailFilterFrame:AddChild(buttonAddToIgnoreList)
+end
+
+init()

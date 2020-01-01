@@ -7,5 +7,6 @@
 
 Colors.lua
 Localization.lua
-MailFilter.lua
+
 MailFilter.xml
+MailFilter.lua
