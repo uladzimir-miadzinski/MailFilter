@@ -7,6 +7,7 @@ local VARIABLES_LOADED = "VARIABLES_LOADED"
 local AceGUI = LibStub("AceGUI-3.0")
 local MailFilter = LibStub("AceAddon-3.0"):NewAddon(ADDON_NAME, "AceEvent-3.0", "AceTimer-3.0")
 local Font = "Fonts\\FRIZQT__.TTF"
+local widget
 
 function MailFilter:WaitMailInbox()
     self:CancelAllTimers()
@@ -25,7 +26,7 @@ function MailFilter:MAIL_INBOX_UPDATE()
 end
 
 function MailFilter:VARIABLES_LOADED()
-   -- init() -- for debug needs init after vars loaded
+    -- init() -- for debug needs init after vars loaded
 end
 
 MailFilter:RegisterEvent(VARIABLES_LOADED)
@@ -66,7 +67,6 @@ function arrToString(arr, indentLevel)
 
     return str .. "]"
 end
---
 
 --------------------------------------------------------------------------------
 --  SLASH COMMANDS
@@ -79,14 +79,14 @@ end
     /mf show [senders|subjects]? - show frame | show list of ignored senders/subjects
     /mf [i|ignore] [sender|subject] %arg% - add smth to ignored senders/subjects list
     /mf hide - hide frame
-]] SLASH_MF1 =
-    "/mf"
+]]
+SLASH_MF1 = "/mf"
 
 SlashCmdList["MF"] = function(arg)
     local action, category, param = strsplit(" ", arg)
 
     if (action == "hide") then
-        return MailFilterFrame:Hide()
+        return releaseWidget(widget)
     end
 
     if (action == "show") then
@@ -473,6 +473,7 @@ end
 
 function init()
     local MailFilterFrame = setupMailFilterFrame()
+    widget = MailFilterFrame
     local buttonClearSenders = getButtonClearList(L["clear_senders_list"], MailFilterFrame, clearSenders)
     local buttonClearSubjects = getButtonClearList(L["clear_subjects_list"], MailFilterFrame, clearSubjects)
     local addToIgnorePane = getAddToIgnorePane(MailFilterFrame)
